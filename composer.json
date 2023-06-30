@@ -1,0 +1,21 @@
+{
+    "name": "oberonlai/wp-updater",
+    "description": "Self hosted WordPress plugin update server",
+    "homepage": "https://github.com/oberonlai/wp-updater",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Oberon Lai",
+            "email": "m615926@gmail.com",
+            "homepage": "https://oberonlai.blog"
+        }
+    ],
+    "require": {
+        "php": ">=7.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "ODS\\": "src/"
+        }
+    }
+}
