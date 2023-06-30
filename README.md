@@ -92,3 +92,13 @@ This is an example of a JSON-formatted file for the plugin information. It inclu
 ```
 
 If you want to push a notification for a new update, simply increment the version number in the plugin. The download_url indicates the location to download the new version of the plugin.
+
+## Hooks - ods_updater_after_purge
+
+Allow plugin developers to perform additional tasks after the plugin update is completed, such as updating database tables, displaying notification alerts, and other behaviors. These tasks can be handled through this hook point.
+
+```php
+add_action('ods_updater_after_purge', function( $upgrader, $options ){
+	// do stuff when plugin updated.
+});
+```
