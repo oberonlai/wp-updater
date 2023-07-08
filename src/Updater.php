@@ -57,7 +57,7 @@ class Updater {
 		$this->plugin_slug   = $args['plugin_slug'];
 		$this->version       = $args['version'];
 		$this->cache_key     = $args['plugin_slug'] . '_updater';
-		$this->$json_url     = $args['json_url'];
+		$this->json_url     = $args['json_url'];
 		$this->cache_allowed = false;
 
 		add_filter( 'plugins_api', array( $this, 'info' ), 20, 3 );
@@ -167,7 +167,7 @@ class Updater {
 	 */
 	public function update( $transient ) {
 
-		if ( empty( $transient->last_checked ) ) {
+		if ( empty( $transient->checked ) ) {
 			return $transient;
 		}
 
