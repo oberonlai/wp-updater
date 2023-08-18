@@ -61,7 +61,7 @@ class Updater {
 		$this->cache_allowed = false;
 
 		add_filter( 'plugins_api', array( $this, 'info' ), 20, 3 );
-		add_filter( 'site_transient_update_plugins', array( $this, 'update' ) );
+		add_filter( 'pre_set_site_transient_update_plugins', array( $this, 'update' ) );
 		add_action( 'upgrader_process_complete', array( $this, 'purge' ), 10, 2 );
 
 	}
