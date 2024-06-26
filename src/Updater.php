@@ -45,6 +45,8 @@ class Updater {
 	 */
 	private $json_url;
 
+	private $license;
+
 	/**
 	 * Construct
 	 *
@@ -57,8 +59,9 @@ class Updater {
 		$this->plugin_slug   = $args['plugin_slug'];
 		$this->version       = $args['version'];
 		$this->cache_key     = $args['plugin_slug'] . '_updater';
-		$this->json_url     = $args['json_url'];
+		$this->json_url      = $args['json_url'];
 		$this->cache_allowed = false;
+		$this->license       = $args['license'] ? $args['license'] : '';
 
 		add_filter( 'plugins_api', array( $this, 'info' ), 20, 3 );
 		add_filter( 'pre_set_site_transient_update_plugins', array( $this, 'update' ) );
@@ -134,8 +137,10 @@ class Updater {
 
 		if ( false === $remote || ! $this->cache_allowed ) {
 
+			$request_url = $this->license ? add_query_arg( array( 'license' => $this->license ), $this->json_url ) : $this->json_url;
+
 			$remote = wp_remote_get(
-				$this->json_url,
+				$request_url,
 				array(
 					'timeout' => 60,
 					'headers' => array(

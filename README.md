@@ -1,6 +1,8 @@
 # WP Updater v1.0
 
-> Simple WordPress Class for self host plugin updating server from [How to Configure Self-Hosted Updates for Your Private Plugins](https://rudrastyh.com/wordpress/self-hosted-plugin-update.html) 
+> Simple WordPress Class for self host plugin updating server
+>
+from [How to Configure Self-Hosted Updates for Your Private Plugins](https://rudrastyh.com/wordpress/self-hosted-plugin-update.html)
 
 ## Requirements
 
@@ -18,7 +20,8 @@ Run the following in your terminal to install with [Composer](https://getcompose
 $ composer require oberonlai/wp-updater
 ```
 
-WP Metabox [PSR-4](https://www.php-fig.org/psr/psr-4/) autoloading and can be used with the Composer's autoloader. Below is a basic example of getting started, though your setup may be different depending on how you are using Composer.
+WP Metabox [PSR-4](https://www.php-fig.org/psr/psr-4/) autoloading and can be used with the Composer's autoloader. Below
+is a basic example of getting started, though your setup may be different depending on how you are using Composer.
 
 ```php
 require __DIR__ . '/vendor/autoload.php';
@@ -31,7 +34,8 @@ $books = new Updater( $options );
 
 ```
 
-See Composer's [basic usage](https://getcomposer.org/doc/01-basic-usage.md#autoloading) guide for details on working with Composer and autoloading.
+See Composer's [basic usage](https://getcomposer.org/doc/01-basic-usage.md#autoloading) guide for details on working
+with Composer and autoloading.
 
 ## Basic Usage
 
@@ -48,7 +52,8 @@ use ODS\Updater;
 
 ## Usage
 
-To create a updater, first instantiate an instance of `Updater`. The class takes one argument, which is an associative array.
+To create a updater, first instantiate an instance of `Updater`. The class takes one argument, which is an associative
+array.
 
 ```php
 $updater = new Updater( array(
@@ -58,8 +63,69 @@ $updater = new Updater( array(
 ));
 ```
 
+## License Manger
+
+You can add the license argument when creating the Updater instance. The license key is used to verify the authenticity
+of the plugin. The license key is stored in the database and is used to verify the authenticity of the plugin.
+
+```php
+$updater = new Updater( array(
+    'plugin_slug' => 'my-plugin',
+    'version'     => '1.0.0',
+    'json_url'    => 'https://mydomain.com/my-plugin-validate.php',
+    'license'     => get_option( 'my-plugin_license_key' ),
+));
+```
+
+In the my-plugin-validate.php file, you can add the following code to verify the license key.
+
+```php
+<?php
+$array = array(
+    "name" => "My Plugin",
+    "slug" => "my-plugin",
+    "author" => "<a href='https://mydomain.com/my-plugin/'>Author</a>",
+    "author_profile" => "https://mydomain.com",
+    "version" => "1.0.1",
+    "requires" => "5.6",
+    "tested" => "6.2.2",
+    "requires_php" => "7.4",
+    "added" => "2021-04-05 00:00:00",
+    "last_updated" => "2023-06-29 00:00:00",
+    "homepage" => "https://mydoamin.com",
+    "sections" => array(
+        "description" => "My plugin description",
+        "installation" => "My plugin installation",
+        "changelog" => "<p>v1.0.1</p><p>Change log</p>"
+    ),
+    "banners" => array(
+        "low" => "https://mydomain.com/my-plugin-banner-low.jpg",
+        "high" => "https://mydomain.com/my-plugin-banner-high.jpg"
+    )
+);
+	
+// no update is available by default
+$update[ 'download_url' ] = '';
+
+if( ! empty( $_GET['license_key' ] ) && license_check_logic( $_GET[ 'license_key' ] ) {
+	$update[ 'download_url' ] = 'pass the URL to plugin ZIP archive here';
+}
+
+...
+
+header( 'Content-Type: application/json' );
+echo json_encode( $update );
+```
+
+```license_check_logic``` is a function that checks the license key. If the license key is valid, the function add the download URL to the update array.
+
+You also can get the plugin slug and site url from client's site with ```$_GET['slug']``` and ```$_GET['site_url']```.
+
 ## Preparations
-You will need a hosting space to store the information file of the plugin and the zip file of the new version of the plugin. You can use space such as Dropbox or Google Drive, or you can place it on your own server. My top recommendation is to host it on GitHub, as it allows integration with version control processes.
+
+You will need a hosting space to store the information file of the plugin and the zip file of the new version of the
+plugin. You can use space such as Dropbox or Google Drive, or you can place it on your own server. My top recommendation
+is to host it on GitHub, as it allows integration with version control processes.
 
 ## my-plugin.json
 
@@ -67,35 +133,37 @@ This is an example of a JSON-formatted file for the plugin information. It inclu
 
 ```JSON
 {
-	"name": "My Plugin",
-	"slug": "my-plugin",
-	"author": "<a href='https://mydomain.com/my-plugin/'>Author</a>",
-	"author_profile": "https://mydomain.com",
-	"version": "1.0.1",
-	"download_url": "https://mydomain.com/my-plugin.zip",
-	"requires": "5.6",
-	"tested": "6.2.2",
-	"requires_php": "7.4",
-	"added": "2021-04-05 00:00:00",
-	"last_updated": "2023-06-29 00:00:00",
-	"homepage": "https://mydoamin.com",
-	"sections": {
-	  "description": "My plugin description",
-	  "installation": "My plugin installation",
-	  "changelog": "<p>v1.0.1</p><p>Change log</p>"
-	},
-	"banners": {
-	  "low": "https://mydomain.com/my-plugin-banner-low.jpg",
-	  "high": "https://mydomain.com/my-plugin-banner-high.jpg"
-	}
+  "name": "My Plugin",
+  "slug": "my-plugin",
+  "author": "<a href='https://mydomain.com/my-plugin/'>Author</a>",
+  "author_profile": "https://mydomain.com",
+  "version": "1.0.1",
+  "download_url": "https://mydomain.com/my-plugin.zip",
+  "requires": "5.6",
+  "tested": "6.2.2",
+  "requires_php": "7.4",
+  "added": "2021-04-05 00:00:00",
+  "last_updated": "2023-06-29 00:00:00",
+  "homepage": "https://mydoamin.com",
+  "sections": {
+    "description": "My plugin description",
+    "installation": "My plugin installation",
+    "changelog": "<p>v1.0.1</p><p>Change log</p>"
+  },
+  "banners": {
+    "low": "https://mydomain.com/my-plugin-banner-low.jpg",
+    "high": "https://mydomain.com/my-plugin-banner-high.jpg"
+  }
 }
 ```
 
-If you want to push a notification for a new update, simply increment the version number in the plugin. The download_url indicates the location to download the new version of the plugin.
+If you want to push a notification for a new update, simply increment the version number in the plugin. The download_url
+indicates the location to download the new version of the plugin.
 
 ## Hooks - ods_updater_after_purge
 
-Allow plugin developers to perform additional tasks after the plugin update is completed, such as updating database tables, displaying notification alerts, and other behaviors. These tasks can be handled through this hook point.
+Allow plugin developers to perform additional tasks after the plugin update is completed, such as updating database
+tables, displaying notification alerts, and other behaviors. These tasks can be handled through this hook point.
 
 ```php
 add_action('ods_updater_after_purge', function( $upgrader, $options ){
